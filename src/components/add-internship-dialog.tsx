@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
-import { useFormState, useFormStatus } from "react-dom";
+import React, { useEffect, useRef, useActionState } from "react";
+import { useFormStatus } from "react-dom";
 import { PlusCircle } from "lucide-react";
 
 import { addInternshipAction } from "@/app/actions";
@@ -45,7 +45,7 @@ export function AddInternshipDialog({
 }) {
   const [open, setOpen] = React.useState(false);
   const { toast } = useToast();
-  const [state, formAction] = useFormState(addInternshipAction, { message: "" });
+  const [state, formAction] = useActionState(addInternshipAction, { message: "" });
   const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
