@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from 'react';
 import { Bookmark, Info, CalendarDays, Building } from "lucide-react";
 import { formatDistanceToNow, parseISO, differenceInDays, isPast } from 'date-fns';
 
@@ -34,6 +35,11 @@ interface InternshipCardProps {
 export function InternshipCard({ internship, onSaveToggle }: InternshipCardProps) {
   const { id, title, company, deadline, requirements, platform, postContent, isSaved, createdAt } = internship;
   const Platform = PLATFORM_INFO[platform];
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   const getDeadlineInfo = () => {
     try {
@@ -87,12 +93,12 @@ export function InternshipCard({ internship, onSaveToggle }: InternshipCardProps
         <div className="flex items-center gap-2 text-sm text-muted-foreground">
             <CalendarDays className="h-4 w-4" />
             <span>Apply by: </span>
-            <Badge variant={deadlineInfo.variant} className={deadlineInfo.className}>{deadlineInfo.text}</Badge>
+            {isClient ? <Badge variant={deadlineInfo.variant} className={deadlineInfo.className}>{deadlineInfo.text}</Badge> : <Badge variant="secondary">Loading...</Badge> }
         </div>
       </CardContent>
       <CardFooter className="flex justify-between items-center bg-muted/50 p-4">
         <span className="text-xs text-muted-foreground">
-            {formatDistanceToNow(new Date(createdAt), { addSuffix: true })}
+            {isClient ? formatDistanceToNow(new Date(createdAt), { addSuffix: true }) : '...'}
         </span>
         <Sheet>
           <SheetTrigger asChild>
